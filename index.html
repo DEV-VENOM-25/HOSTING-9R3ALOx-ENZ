@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 HOSTING BY ENZ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0d6efd;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: #0d6efd(19, 149, 255);
+            color: black;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 200px;
+            color: black;
+            text-align: center;
+            box-shadow: #ccc;
+        }
+        .panel img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        button {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            color: black;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: red;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 align="center">Hosting Enz</h1>
+    </div>
+    <div class="container">
+        <div class="panel">
+            <img src="YSF.jpeg" alt="Host 1">
+            <p>20DH</p>
+            <h2>OPEN</h2>
+            <button onclick="openModal('OPEN')">Buy</button>
+        </div>
+        <div class="panel">
+            <img src="YSF.jpeg" alt="Host 2">
+            <p>25DH</p>
+            <h2>GOLD</h2>
+            <button onclick="openModal('GOLD')">Buy</button>
+        </div>
+        <div class="panel">
+            <img src="YSF.jpeg" alt="Host 3">
+            <p>30DH</p>
+            <h2>PREMIUM</h2>
+            <button onclick="openModal('PREMIUM')">Buy</button>
+        </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <input type="text" id="phone" placeholder="Enter your phone number">
+        <input type="email" id="email" placeholder="Enter your email">
+        <input type="text" id="discord" placeholder="Enter your Discord ID">
+        <button onclick="sendData()">BUY HOST</button>
+    </div>
+
+    <script>
+        let selectedHost = "";
+
+        function openModal(host) {
+            selectedHost = host;
+            document.getElementById("modalTitle").innerText = `Buy ${host}`;
+            document.getElementById("orderModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("orderModal").style.display = "none";
+        }
+
+        function sendData() {
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const discord = document.getElementById('discord').value;
+            
+            if (!phone || !email || !discord) {
+                alert("Please fill in all fields");
+                return;
+            }
+
+            const webhookURL = "https://discord.com/api/webhooks/1344108484186341419/oKH-YTJgipAXNbPnCEirZ1vPTxu4u8T4BL9t0jQMz5-mE-cvyQ2ZCo0oQsR2Xwx_l5sj";
+            
+            const data = {
+                content: `New Order!\nHost: ${selectedHost}\nPhone: ${phone}\nEmail: ${email}\nDiscord ID: ${discord}`
+            };
+            
+            fetch(webhookURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                alert("Order Sent Successfully!");
+                closeModal();
+            })
+            .catch(error => alert("Error Sending Order"));
+        }
+    </script>
+</body>
+</html>
